@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <title>Hello, world!</title>
+  </head>
+<body>
+   <div class="container">
+		<div class="jumbotron">
+		  <h1 class="display-4">Hello, world!</h1>
+		  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+		  <hr class="my-4">
+		  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+		</div>
+      	<div class="row">
+      		<div class="col-6 col-md-4"></div>
+      		<div class="col-6 col-md-4">
+			   	<p> <button value="e"  id="btn_off" type="button" class="btn btn-outline-primary btn-lg btn-block">LED ON</button>
+		       	<p> <button value="a"  id="btn_on" type="button" class="btn btn-outline-danger btn-lg btn-block">LED OFF</button>
+			</div>
+			<div class="col-6 col-md-4">
+			<div class="card">
+					<div class="card-body">
+						
+						<span id="message-box"><i class="far fa-bell fa-2x"></i></span>
+					</div>
+				</div>
+			</div>
+      	</div>
+      
+   	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script src="https://use.fontawesome.com/releases/v5.12.0/js/all.js" data-auto-replace-svg="nest"></script>
+
+
+   <script>
+	   var socket = io();
+			
+		$('#btn_off').on("click", function (){
+		//console.log($(this).val());
+    	socket.emit('apagar', $(this).val());
+		});
+		
+		$('#btn_on').on("click", function (){
+		//console.log($(this).val());
+    	socket.emit('encender', $(this).val());
+		});	
+	
+		socket.on('arduino:dataSerial', function(dataSerial){
+		var arduinoDataLed = dataSerial.value;
+			if(arduinoDataLed == 101 || arduinoDataLed == 1 || arduinoDataLed == 10 ){//solucion posible
+				$('#message-box').html('<i class="fas fa-lightbulb fa-3x"></i>');
+			}else if(arduinoDataLed == 97 || arduinoDataLed == 9 || arduinoDataLed == 7){//solucion posible
+				$('#message-box').html('<i class="far fa-lightbulb fa-3x"></i>');
+			}
+		});
+	
+	
+	</script>
+</body>
+</html>
